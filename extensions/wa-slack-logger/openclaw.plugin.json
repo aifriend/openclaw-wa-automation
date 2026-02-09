@@ -1,0 +1,21 @@
+{
+  "id": "wa-slack-logger",
+  "name": "WhatsApp Slack Logger",
+  "version": "0.1.0",
+  "description": "Logs WhatsApp conversations to Slack threads with configurable auto-replies",
+  "author": "Jose Lopez <j.b.lopez.acc@gmail.com>",
+  "main": "src/index.ts",
+  "env": [
+    "SLACK_BOT_TOKEN",
+    "SLACK_LOG_CHANNEL"
+  ],
+  "optionalEnv": [
+    "SLACK_SIGNING_SECRET"
+  ],
+  "capabilities": [
+    "background-service",
+    "message-hook",
+    "commands",
+    "agent-tool"
+  ]
+}

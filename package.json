@@ -1,0 +1,24 @@
+{
+  "name": "openclaw-wa-automation",
+  "version": "0.1.0",
+  "description": "OpenClaw WhatsApp auto-reply automation with Slack logging",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build --workspace=extensions/wa-slack-logger",
+    "typecheck": "tsc --noEmit --project extensions/wa-slack-logger/tsconfig.json",
+    "start": "openclaw gateway start",
+    "stop": "openclaw gateway stop",
+    "status": "openclaw gateway status",
+    "logs": "openclaw gateway logs",
+    "doctor": "openclaw plugins doctor"
+  },
+  "workspaces": [
+    "extensions/wa-slack-logger"
+  ],
+  "author": "Jose Lopez <j.b.lopez.acc@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
