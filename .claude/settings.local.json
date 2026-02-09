@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.openclaw.ai)",
+      "WebFetch(domain:zenvanriel.nl)",
+      "WebFetch(domain:openclaw.ai)",
+      "WebFetch(domain:clawhub.com)",
+      "WebFetch(domain:clawhub.ai)",
+      "WebFetch(domain:skillsmp.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git init:*)",
+      "Bash(git -C /Users/bigboy/Sites/Bcp_project/project/0_PERSONAL/local_agent branch -m main)",
+      "Bash(gh repo create:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
