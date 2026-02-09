@@ -1,0 +1,23 @@
+{
+  "name": "@openclaw-wa/slack-logger",
+  "version": "0.1.0",
+  "description": "OpenClaw plugin: WhatsApp to Slack logger with auto-replies",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@slack/web-api": "^7.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

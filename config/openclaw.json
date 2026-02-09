@@ -1,0 +1,94 @@
+{
+  // OpenClaw Configuration - WhatsApp Auto-Reply + Slack Logger
+  // Project: openclaw-wa-automation
+  // Author: Jose Lopez
+
+  // LLM Provider: Azure AI Services (Anthropic-compatible endpoint)
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "azure/claude-sonnet-4-5"
+      }
+    }
+  },
+
+  "models": {
+    "providers": {
+      "azure": {
+        "baseUrl": "https://aifdeu2aicgd01.services.ai.azure.com/anthropic/v1",
+        "apiType": "anthropic-messages",
+        "apiKey": "${AZURE_AI_API_KEY}"
+      }
+    }
+  },
+
+  // Gateway Settings
+  "gateway": {
+    "port": 8789
+  },
+
+  // WhatsApp Channel
+  "channels": {
+    "whatsapp": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "groups": {
+        "*": {
+          "groupPolicy": "open",
+          "activation": "always",
+          "requireMention": false
+        }
+      }
+    },
+    "slack": {
+      "enabled": true
+    }
+  },
+
+  // Session Management
+  "session": {
+    "scope": "per-sender",
+    "resetPolicy": "daily"
+  },
+
+  // Plugin Configuration
+  "plugins": {
+    "enabled": true,
+    "load": {
+      "paths": ["./extensions/wa-slack-logger"]
+    },
+    "entries": {
+      "wa-slack-logger": {
+        "enabled": true,
+        "config": {
+          "slackChannel": "${SLACK_LOG_CHANNEL}",
+          "defaultMode": "desactivado",
+          "defaultCooldownMinutes": 5,
+          "defaultLanguage": "auto",
+          "batchFlushIntervalMs": 2000,
+          "batchMaxSize": 5,
+          "configCacheTtlMs": 300000,
+          "threadRegistryPath": "~/.openclaw/wa-slack-threads.json"
+        }
+      }
+    }
+  },
+
+  // Cron Jobs
+  "cron": {
+    "enabled": true,
+    "store": "./cron/jobs.json",
+    "maxConcurrentRuns": 1
+  },
+
+  // Security
+  "sandbox": {
+    "mode": "non-main",
+    "scope": "agent"
+  },
+
+  // Tool Access
+  "tools": {
+    "profile": "messaging"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "jobs": [
+    {
+      "id": "resumen-diario",
+      "name": "Resumen Diario",
+      "schedule": "0 23 * * *",
+      "sessionType": "isolated",
+      "payload": {
+        "message": "Genera un resumen diario de todas las conversaciones de WhatsApp activas en las ultimas 24 horas. Para cada conversacion, incluye: cantidad de mensajes, temas principales y un resumen de 2-3 oraciones. Publica cada resumen en el thread de Slack correspondiente usando la herramienta log_to_slack.",
+        "channel": "slack"
+      },
+      "enabled": true,
+      "timezone": "America/Lima"
+    },
+    {
+      "id": "resumen-semanal",
+      "name": "Resumen Semanal",
+      "schedule": "0 10 * * 1",
+      "sessionType": "isolated",
+      "payload": {
+        "message": "Genera un reporte semanal consolidado de todas las conversaciones de WhatsApp. Incluye: total de mensajes procesados, conversaciones mas activas (top 5), temas recurrentes, cantidad de auto-respuestas enviadas, y highlights de la semana. Publica el reporte como un mensaje nuevo en el canal de Slack.",
+        "channel": "slack"
+      },
+      "enabled": true,
+      "timezone": "America/Lima"
+    },
+    {
+      "id": "health-check",
+      "name": "Health Check",
+      "schedule": "*/30 * * * *",
+      "sessionType": "main",
+      "payload": {
+        "message": "Ejecuta un health check del plugin wa-slack-logger. Verifica: conexion con Slack, integridad del registro de threads, tamano de la cola de mensajes. Si hay problemas, reporta en el canal de Slack."
+      },
+      "enabled": true,
+      "timezone": "America/Lima"
+    }
+  ]
+}

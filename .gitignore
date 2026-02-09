@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnp.*
+.yarn/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+credentials/
+
+# OpenClaw runtime
+~/.openclaw/credentials/
+*.lock
+gateway.*.lock
+
+# Build output
+dist/
+build/
+*.js.map
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Thread registry (contains runtime state)
+wa-slack-threads.json
