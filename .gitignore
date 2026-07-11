@@ -36,3 +36,4 @@ npm-debug.log*
 
 # Thread registry (contains runtime state)
 wa-slack-threads.json
+.claude/
