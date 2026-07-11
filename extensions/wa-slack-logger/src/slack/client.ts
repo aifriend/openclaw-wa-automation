@@ -78,7 +78,7 @@ export class SlackClient {
         ) {
           const retryAfter =
             typeof err === "object" && "retryAfter" in (err as Record<string, unknown>)
-              ? Number((err as { retryAfter: number }).retryAfter)
+              ? Number((err as Record<string, unknown>).retryAfter)
               : 5;
           await new Promise((r) => setTimeout(r, retryAfter * 1000));
           continue;
