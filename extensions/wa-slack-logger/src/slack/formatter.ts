@@ -46,7 +46,7 @@ export function formatThreadParent(ctx: WAMessageContext): {
 
   const text = `${icon} ${type}: ${name}`;
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "header",
       text: {
@@ -83,7 +83,7 @@ export function formatIncomingMessage(ctx: WAMessageContext): {
 
   const text = `[${time}] ${sender}: ${body}`;
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "section",
       text: {
@@ -103,7 +103,7 @@ export function formatIncomingMessage(ctx: WAMessageContext): {
           text: `\u{1f4ce} _Adjunto: ${ctx.mediaType}_`,
         },
       ],
-    } as (typeof blocks)[0]);
+    });
   }
 
   return { text, blocks };
@@ -125,7 +125,7 @@ export function formatAutoReply(
 
   const confidenceText = confidence !== undefined ? ` | Confianza: ${Math.round(confidence * 100)}%` : "";
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "section",
       text: {
@@ -156,7 +156,7 @@ export function formatSkippedReply(reason: string, ctx: WAMessageContext): {
 
   const text = `[${time}] \u{23ed}\u{fe0f} Omitido: ${reason}`;
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "context",
       elements: [
@@ -184,7 +184,7 @@ export function formatDailySummary(
 } {
   const text = `\u{1f4ca} Resumen ${date}: ${messageCount} mensajes, ${autoReplyCount} auto-respuestas`;
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "header",
       text: {
@@ -248,7 +248,7 @@ export function formatWeeklyReport(
     .map((c, i) => `${i + 1}. ${c.name} (${c.count} msgs)`)
     .join("\n");
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "header",
       text: {
@@ -296,7 +296,7 @@ export function formatError(error: string, context?: string): {
 
   const text = `\u{26a0}\u{fe0f} Error: ${error}`;
 
-  const blocks = [
+  const blocks: unknown[] = [
     {
       type: "section",
       text: {
