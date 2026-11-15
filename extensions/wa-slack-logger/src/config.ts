@@ -88,11 +88,17 @@ export function parseConfigString(raw: string): Partial<ConversationConfig> {
   // Format: "Config: modo=todos | cooldown=5min | idioma=auto | keywords=hola,test"
   const pairs = raw
     .replace(/^.*Config:\s*/i, "")
-    .split("|")
+    // Split on "|" or on whitespace that precedes the next "key=" token, so both
+    // "modo=todos | cooldown=5min" and "modo=todos cooldown=5min" parse, while
+    // spaces inside a value (notas=hola mundo) are preserved.
+    .split(/\s*\|\s*|\s+(?=[\p{L}_]+=)/u)
     .map((s) => s.trim());
 
   for (const pair of pairs) {
-    const [key, value] = pair.split("=").map((s) => s.trim());
+    const eq = pair.indexOf("=");
+    if (eq < 0) continue;
+    const key = pair.slice(0, eq).trim();
+    const value = pair.slice(eq + 1).trim();
     if (!key || !value) continue;
 
     switch (key.toLowerCase()) {

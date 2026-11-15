@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "build": "npm run build --workspace=extensions/wa-slack-logger",
-    "typecheck": "tsc --noEmit --project extensions/wa-slack-logger/tsconfig.json",
+    "typecheck": "tsc --noEmit --project extensions/wa-slack-logger/tsconfig.json && tsc --project extensions/wa-slack-logger/tsconfig.test.json",
     "start": "openclaw gateway start",
     "stop": "openclaw gateway stop",
     "status": "openclaw gateway status",
     "logs": "openclaw gateway logs",
-    "doctor": "openclaw plugins doctor"
+    "doctor": "openclaw plugins doctor",
+    "test": "vitest run"
   },
   "workspaces": [
     "extensions/wa-slack-logger"
@@ -20,5 +21,10 @@
   "license": "MIT",
   "engines": {
     "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.0"
   }
 }

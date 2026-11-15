@@ -246,12 +246,24 @@ export class SlackLoggerService {
 
   /** Check if text contains a question */
   private isQuestion(text: string): boolean {
+    // JS `\b` does not treat accented letters as word characters, so word
+    // boundaries are expressed with explicit lookarounds. Interrogative words
+    // only count at the start of a sentence, so statements such as "dije que
+    // vengo" or "this is fine" are not mistaken for questions.
+    const L = "\\p{L}";
+    const start = "(?:^|[.!?\\n]\\s*)";
+    const end = `(?![${L}])`;
     const questionPatterns = [
-      /\?/,
-      /^[¿\u00bf]/,
-      /\b(qu[eé]|c[oó]mo|cu[aá]ndo|d[oó]nde|qui[eé]n|cu[aá]l|cu[aá]nto|por qu[eé])\b/i,
-      /\b(what|how|when|where|who|which|why|can|could|would|should|is|are|do|does)\b/i,
-      /\b(alguien sabe|alguno sabe|saben|conocen)\b/i,
+      /[?\u00bf]/,
+      new RegExp(
+        `${start}(?:qu[eé]|c[oó]mo|cu[aá]ndo|d[oó]nde|qui[eé]n(?:es)?|cu[aá]l(?:es)?|cu[aá]nt[oa]s?|por qu[eé])${end}`,
+        "iu"
+      ),
+      new RegExp(
+        `${start}(?:what|how|when|where|who|which|why|can|could|would|should|is|are|do|does|did|will)${end}`,
+        "iu"
+      ),
+      new RegExp(`(?<![${L}])(?:alguien sabe|alguno sabe|alguien conoce)${end}`, "iu"),
     ];
 
     return questionPatterns.some((p) => p.test(text));

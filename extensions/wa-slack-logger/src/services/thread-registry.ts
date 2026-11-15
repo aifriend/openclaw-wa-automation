@@ -27,6 +27,8 @@ export class ThreadRegistry {
   private configCacheTtl: number;
   private slackClient: SlackClient;
   private defaultConfig: ConversationConfig;
+  /** Thread creations still in flight, keyed by chat JID (prevents duplicate threads) */
+  private pending: Map<string, Promise<ThreadEntry>> = new Map();
 
   constructor(
     pluginConfig: PluginConfig,
@@ -86,23 +88,38 @@ export class ThreadRegistry {
       return existing;
     }
 
-    // Create new Slack thread
+    // Concurrent callers for the same chat share one in-flight creation,
+    // otherwise each would post its own Slack thread and the last would win.
+    const inFlight = this.pending.get(ctx.chatJid);
+    if (inFlight) {
+      return inFlight;
+    }
+
+    const creation = this.createThread(ctx).finally(() => {
+      this.pending.delete(ctx.chatJid);
+    });
+    this.pending.set(ctx.chatJid, creation);
+    return creation;
+  }
+
+  private async createThread(ctx: WAMessageContext): Promise<ThreadEntry> {
     const { text, blocks } = formatThreadParent(ctx);
     const threadTs = await this.slackClient.createThread(text, blocks);
 
     // Pin default config message in the thread
     const configText = formatConfigMessage(this.defaultConfig);
-    const configTs = await this.slackClient.postThreadMessage(threadTs, configText);
+    await this.slackClient.postThreadMessage(threadTs, configText);
     // Note: pinning in threads requires channel-level pin, which may not work
     // for thread replies. Config is tracked by convention (first message format).
 
+    const now = new Date().toISOString();
     const entry: ThreadEntry = {
       chatJid: ctx.chatJid,
       slackThreadTs: threadTs,
       name: ctx.isGroup ? (ctx.groupName ?? ctx.chatJid) : ctx.senderName,
       type: ctx.isGroup ? "group" : "dm",
-      createdAt: new Date().toISOString(),
-      lastMessageAt: new Date().toISOString(),
+      createdAt: now,
+      lastMessageAt: now,
       messageCount: 0,
       config: { ...this.defaultConfig },
     };
