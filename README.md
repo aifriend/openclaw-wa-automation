@@ -94,8 +94,10 @@ SLACK_LOG_CHANNEL=C0123456789
 ### 5. Install Dependencies
 
 ```bash
-npm install
+npm ci
 ```
+
+`npm ci` installs the exact versions recorded in the committed `package-lock.json`, which is what CI uses. Use `npm install` only when you intend to change dependencies.
 
 ### 6. OpenClaw Onboarding
 
@@ -168,12 +170,6 @@ Each WhatsApp conversation can be configured independently. Default mode is `des
 /wa-pause <chatJid>
 /wa-resume <chatJid> solo_preguntas
 /wa-status
-```
-
-**Via Slack thread**: Edit the pinned config message in a conversation's thread:
-
-```
-Config: modo=todos | cooldown=5min | idioma=auto | keywords=urgente,importante
 ```
 
 ### Cron Jobs
