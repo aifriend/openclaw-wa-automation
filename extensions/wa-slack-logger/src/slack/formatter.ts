@@ -29,6 +29,11 @@ function formatDate(timestamp: number): string {
   });
 }
 
+/** Escape the three characters Slack treats as control characters in mrkdwn */
+export function escapeSlack(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 /** Truncate text to fit Slack limits */
 function truncate(text: string, max = MAX_TEXT_LENGTH): string {
   if (text.length <= max) return text;
@@ -78,8 +83,8 @@ export function formatIncomingMessage(ctx: WAMessageContext): {
   blocks: unknown[];
 } {
   const time = formatTime(ctx.timestamp);
-  const sender = ctx.senderName || ctx.senderJid.split("@")[0];
-  const body = truncate(ctx.text);
+  const sender = escapeSlack(ctx.senderName || ctx.senderJid.split("@")[0]);
+  const body = escapeSlack(truncate(ctx.text));
 
   const text = `[${time}] ${sender}: ${body}`;
 
